@@ -2,27 +2,38 @@
 
 import rasterio
 import matplotlib.pyplot as plt
-
+import geopandas as gpd
 # Define and open the path to the raster file
 
-path = "data/traning/overflade_1.tif"
+gdf = gpd.read_file("data/training/omrids_1.gpkg")
 
-with rasterio.open(path) as src:
-    print("Bredde:", src.width)
-    print("Højde:", src.height)
-    print("CRS:", src.crs)
-    print("Bounds:", src.bounds)
-    print("Opløsning:", src.res)
-    print("NoData:", src.nodata)
-
-    elevation = src.read(1)
-
-print("Min højde:", elevation.min())
-print("Maks højde:", elevation.max())
+print(gdf.total_bounds)
 
 
+from pathlib import Path
+import geopandas as gpd
 
+gdf = gpd.read_file("data/training/omrids_1.gpkg")
+minx, miny, maxx, maxy = gdf.total_bounds
 
+for laz in Path("data/training/lidar").glob("*.laz"):
+    parts = laz.stem.split("_")
 
+    tile_y = int(parts[-2])
+    tile_x = int(parts[-1])
 
+    tile_minx = tile_x * 1000
+    tile_maxx = tile_minx + 1000
 
+    tile_miny = tile_y * 1000
+    tile_maxy = tile_miny + 1000
+
+    overlap = (
+        tile_minx <= maxx and
+        tile_maxx >= minx and
+        tile_miny <= maxy and
+        tile_maxy >= miny
+    )
+
+    if overlap:
+        print(laz.name)
