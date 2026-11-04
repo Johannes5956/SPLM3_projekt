@@ -7,7 +7,7 @@ venv/
 .venv/
 
 # Data
-data/
+02data/
 
 # VS Code
 .vscode/

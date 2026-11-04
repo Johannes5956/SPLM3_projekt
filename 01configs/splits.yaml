@@ -1,0 +1,3 @@
+train: [skov_nomi]
+val: [ryde_plantage]
+test: [stenrevlen]
