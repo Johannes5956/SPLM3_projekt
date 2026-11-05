@@ -8,6 +8,7 @@ venv/
 
 # Data
 02data/
+grovsortering/
 
 # VS Code
 .vscode/
